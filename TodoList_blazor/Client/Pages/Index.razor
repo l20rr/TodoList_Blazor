@@ -1,3 +1,14 @@
 ﻿@page "/"
+@using TodoList_blazor.Shared
 
 <h3>To do</h3>
+
+<form Model="@Do">
+    <input type="text" @bind="@Do.DoString" />
+</form>
+
+
+
+@code{
+    private Do Do{ get; set; } = new Do();
+}
