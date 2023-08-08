@@ -1,14 +1,79 @@
 ﻿@page "/"
+@using TodoList_blazor.Client.Services;
 @using TodoList_blazor.Shared
+@inject NavigationManager NavigationManager
+@inject IDoService DoService
+@using Bogus;
 
 <h3>To do</h3>
 
-<form Model="@Do">
+<form>
     <input type="text" @bind="@Do.DoString" />
+    <button class="btn btn-success" @onclick="addDo">Add</button>
 </form>
 
+@foreach (var dos in DoList)
+{
+    <div>
+        <input type="checkbox" @bind="@Do.Completed">
+        <h3>@dos.DoString</h3>
+        <button class="btn btn-danger" @onclick="() => delDo(dos.DoId)">Delete</button>
+    </div>
+}
+
+@code {
+    private Do Do { get; set; } = new Do();
+    private List<Do> DoList = new List<Do>();
+
+    private async Task addDo()
+    {
+        if (string.IsNullOrEmpty(Do.DoString))
+        {
+            Console.WriteLine("vazio");
+            return;
+        }
+        // Assuming DoService.AddDo is correctly implemented
+        var resp = await DoService.AddDo(Do);
+    }
+    private async Task AddFakeData()
+    {
+    
+        await Task.Delay(2000);
+
+        var faker = new Faker();
+
+       
+        int numberOfFakeTasks = faker.Random.Int(1, 11);
+
+        for (int i = 0; i < numberOfFakeTasks; i++)
+        {
+            // Gera um nome falso aleatório para a tarefa
+            string fakeName = faker.Random.ToString();
+
+         
+            var fakeDo = new Do { DoString = fakeName };
+
+            // Chama a função DoService.Add() e adiciona um log
+            await DoService.AddDo(fakeDo);
+            Console.WriteLine($"Adicionada tarefa falsa: {fakeName}");
+
+            
+            DoList.Add(fakeDo);
+        }
+    }
 
 
-@code{
-    private Do Do{ get; set; } = new Do();
+    private void delDo(int id)
+    {
+        DoService.DeleteDo(id);
+        NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await AddFakeData();
+        // Assuming DoService.GetDos is correctly implemented
+        var allDos = await DoService.GetDos();
+        DoList = allDos.ToList();
+    }
 }

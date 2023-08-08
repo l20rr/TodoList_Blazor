@@ -33,9 +33,9 @@ namespace TodoList_blazor.API
                 options.AddPolicy("AllowSpecificOrigins",
                     builder =>
                     {
-                        builder.WithOrigins("https://localhost:7088/")
-                                .AllowAnyHeader()
-                               .AllowAnyMethod();
+                        builder.WithOrigins("https://localhost:7192")
+                            .AllowAnyHeader()
+                            .AllowAnyMethod();
                     });
             });
 

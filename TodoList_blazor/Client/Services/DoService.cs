@@ -1,4 +1,6 @@
-﻿using TodoList_blazor.Shared;
+﻿using System.Net.Http.Json;
+using System.Text.Json;
+using TodoList_blazor.Shared;
 
 namespace TodoList_blazor.Client.Services
 {
@@ -11,24 +13,33 @@ namespace TodoList_blazor.Client.Services
             _httpClient = httpClient;
         }
 
-        public Task<Do> AddDo(Do dos)
+        public async Task<Do> AddDo(Do dos)
         {
-            throw new NotImplementedException();
+            var result = await _httpClient.PostAsJsonAsync("api/dos", dos);
+            if (result.IsSuccessStatusCode)
+            {
+                return await result.Content.ReadFromJsonAsync<Do>();
+            }
+            return null;
         }
 
-        public Task DeleteDo(int id)
+        public async Task DeleteDo(int id)
         {
-            throw new NotImplementedException();
+            await _httpClient.DeleteAsync($"api/dos/{id}");
         }
 
-        public Task<Do> GetDoId(int id)
+        public async Task<Do> GetDoId(int id)
         {
-            throw new NotImplementedException();
+            return await JsonSerializer.DeserializeAsync<Do>
+              (await _httpClient.GetStreamAsync($"api/users/{id}"), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
+
+
         }
 
-        public Task<IEnumerable<Do>> GetDos()
+        public async Task<IEnumerable<Do>> GetDos()
         {
-            throw new NotImplementedException();
+            return await JsonSerializer.DeserializeAsync<IEnumerable<Do>>
+                 (await _httpClient.GetStreamAsync($"api/dos"), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
         }
     }
 }

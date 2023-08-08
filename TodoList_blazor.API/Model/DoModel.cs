@@ -37,5 +37,19 @@ namespace TodoList_blazor.API.Model
         {
             return _appDbContext.Dos;
         }
+
+        public Do UpdateDo(Do dos)
+        {
+            var foundDo = _appDbContext.Dos.FirstOrDefault(d => d.DoId == dos.DoId);
+            if (foundDo != null) {
+                foundDo.Completed = dos.Completed;
+
+                _appDbContext.SaveChangesAsync();
+
+                return foundDo; 
+            }
+            return null;
+
+        }
     }
 }

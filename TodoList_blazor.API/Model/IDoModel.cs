@@ -11,5 +11,8 @@ namespace TodoList_blazor.API.Model
         Task<Do> AddDo(Do dos);       
 
         void DeleteDo(int id);  
+
+        Do UpdateDo(Do dos);      
+
     }
 }

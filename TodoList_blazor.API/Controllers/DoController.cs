@@ -57,5 +57,26 @@ namespace TodoList_blazor.API.Controllers
 
             return NoContent();
         }
+
+        [HttpPut("{id}")]
+        public IActionResult UpdateDo(int id, [FromBody] Do dos)
+        {
+            if (dos == null)
+                return BadRequest();
+
+
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var doToUpdate = _doModel.GetDo(dos.DoId);
+
+            if (doToUpdate == null)
+                return NotFound();
+
+            _doModel.UpdateDo(dos);
+
+            return NoContent(); 
+        }
     }
 }
