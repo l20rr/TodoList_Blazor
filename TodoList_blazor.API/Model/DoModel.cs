@@ -1,4 +1,5 @@
-﻿using TodoList_blazor.Shared;
+﻿using Microsoft.EntityFrameworkCore;
+using TodoList_blazor.Shared;
 
 namespace TodoList_blazor.API.Model
 {
@@ -18,6 +19,17 @@ namespace TodoList_blazor.API.Model
             return result.Entity;
         }
 
+        public async Task DeleteAll()
+        {
+            var foundDos = _appDbContext.Dos.OrderByDescending(d => d.DoId).ToList();
+
+            foreach (var dos in foundDos)
+            {
+                _appDbContext.Dos.Remove(dos);
+            }
+
+            await _appDbContext.SaveChangesAsync();
+        }
         public void DeleteDo(int id)
         {
            var foundDo = _appDbContext.Dos.FirstOrDefault(d => d.DoId == id);   

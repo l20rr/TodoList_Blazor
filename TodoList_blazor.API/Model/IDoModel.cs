@@ -8,7 +8,9 @@ namespace TodoList_blazor.API.Model
 
         Do GetDo(int id);
 
-        Task<Do> AddDo(Do dos);       
+        Task<Do> AddDo(Do dos);
+
+        Task DeleteAll();
 
         void DeleteDo(int id);  
 

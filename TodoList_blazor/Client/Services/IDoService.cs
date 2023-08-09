@@ -8,5 +8,9 @@ namespace TodoList_blazor.Client.Services
         Task<Do> GetDoId(int id);
         Task<Do> AddDo(Do dos);
         Task DeleteDo(int id);
+
+
+
+        Task UpdateDo(Do dos, int id);  
     }
 }

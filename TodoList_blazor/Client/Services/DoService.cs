@@ -1,4 +1,5 @@
 ﻿using System.Net.Http.Json;
+using System.Text;
 using System.Text.Json;
 using TodoList_blazor.Shared;
 
@@ -40,6 +41,13 @@ namespace TodoList_blazor.Client.Services
         {
             return await JsonSerializer.DeserializeAsync<IEnumerable<Do>>
                  (await _httpClient.GetStreamAsync($"api/dos"), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
+        }
+
+        public async Task UpdateDo(Do dos, int id)
+        {
+            var doJson =
+                  new StringContent(JsonSerializer.Serialize(dos), Encoding.UTF8, "application/json");
+            await _httpClient.PutAsync($"api/dos/{id}", doJson);
         }
     }
 }

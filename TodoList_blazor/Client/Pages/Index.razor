@@ -11,20 +11,45 @@
     <input type="text" @bind="@Do.DoString" />
     <button class="btn btn-success" @onclick="addDo">Add</button>
 </form>
+<div>
+    <h4>Ver os já feitos</h4>
+    <button @onclick="Filter">Ver</button>
+</div>
 
-@foreach (var dos in DoList)
+@if (filterOn == true)
 {
-    <div>
-        <input type="checkbox" @bind="@Do.Completed">
-        <h3>@dos.DoString</h3>
-        <button class="btn btn-danger" @onclick="() => delDo(dos.DoId)">Delete</button>
-    </div>
+    @foreach (var dos in FilteredDos)
+    {
+        <div>
+            <h3>@dos.DoString</h3>
+        </div>
+    }
+   
+
 }
+else
+{
+    @foreach (var dos in DoList)
+    {
+        <div class="d-flex">
+            <input type="checkbox" checked="@dos.Completed" @onclick="() => UpdateDo(dos)">
+            <h3>@dos.DoString</h3>
+            <button class="btn btn-danger" @onclick="() => delDo(dos.DoId)">Delete</button>
+        </div>
+    }
+}
+
+
+
+
+
+
 
 @code {
     private Do Do { get; set; } = new Do();
     private List<Do> DoList = new List<Do>();
-
+    private List<Do> FilteredDos = new List<Do>();
+    private bool filterOn = false;  
     private async Task addDo()
     {
         if (string.IsNullOrEmpty(Do.DoString))
@@ -37,31 +62,47 @@
     }
     private async Task AddFakeData()
     {
-    
+
         await Task.Delay(2000);
 
         var faker = new Faker();
 
-       
-        int numberOfFakeTasks = faker.Random.Int(1, 11);
+
+        int numberOfFakeTasks = faker.Random.Int(1, 5);
 
         for (int i = 0; i < numberOfFakeTasks; i++)
         {
             // Gera um nome falso aleatório para a tarefa
-            string fakeName = faker.Random.ToString();
+            string fakeName = faker.Name.FirstName();
 
-         
+
             var fakeDo = new Do { DoString = fakeName };
 
             // Chama a função DoService.Add() e adiciona um log
             await DoService.AddDo(fakeDo);
             Console.WriteLine($"Adicionada tarefa falsa: {fakeName}");
 
-            
+
             DoList.Add(fakeDo);
         }
     }
+    private async Task UpdateDo(Do todo)
+    {
+        todo.Completed = !todo.Completed;
 
+        // Atualiza a tarefa na base de dados
+        await DoService.UpdateDo(todo, todo.DoId);
+
+        // Atualiza a lista local, procurando pela tarefa pelo ID
+        var index = DoList.FindIndex(d => d.DoId == todo.DoId);
+        if (index != -1)
+        {
+            DoList[index] = todo;
+        }
+
+        // Exibe no console quando o estado de conclusão for alterado
+        Console.WriteLine($"ID: {todo.DoId}, Completed: {todo.Completed}");
+    }
 
     private void delDo(int id)
     {
@@ -71,9 +112,19 @@
 
     protected override async Task OnInitializedAsync()
     {
-        await AddFakeData();
+        
+        //await AddFakeData();
         // Assuming DoService.GetDos is correctly implemented
         var allDos = await DoService.GetDos();
         DoList = allDos.ToList();
+        
     }
+
+    private async Task Filter()
+    {
+        filterOn = true;
+        var allDos = await DoService.GetDos();
+        FilteredDos = allDos.Where(d => d.Completed).ToList();
+    }
+
 }
