@@ -62,7 +62,7 @@ namespace TodoList_blazor.API.Controllers
         public async Task<IActionResult> DeleteAll()
         {
             await _doModel.DeleteAll();
-            return Ok(); // Você também pode usar NoContent(), se preferir
+            return Ok(); 
         }
 
         [HttpPut("{id}")]
