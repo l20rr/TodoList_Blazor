@@ -8,8 +8,10 @@ namespace TodoList_blazor.Shared
 {
     public class Do
     {
-        public int DoId { get; set; }
-        public string DoString { get; set; }
+        public Guid DoId { get; set; }
+        public string Description { get; set; }
         public bool Completed { get; set; }
+
+        public DateTime DateOn { get; set; }
     }
 }

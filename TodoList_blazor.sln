@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TodoList_blazor.Client", "T
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TodoList_blazor.Shared", "TodoList_blazor\Shared\TodoList_blazor.Shared.csproj", "{B1A8B16B-3396-4EBF-B30A-2A27A1D3B200}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TodoList_blazor.API", "TodoList_blazor.API\TodoList_blazor.API.csproj", "{3ED57F91-443E-4FE1-AAD8-A33BEAA17886}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,10 +21,6 @@ Global
 		{B1A8B16B-3396-4EBF-B30A-2A27A1D3B200}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B1A8B16B-3396-4EBF-B30A-2A27A1D3B200}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B1A8B16B-3396-4EBF-B30A-2A27A1D3B200}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3ED57F91-443E-4FE1-AAD8-A33BEAA17886}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3ED57F91-443E-4FE1-AAD8-A33BEAA17886}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3ED57F91-443E-4FE1-AAD8-A33BEAA17886}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3ED57F91-443E-4FE1-AAD8-A33BEAA17886}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
